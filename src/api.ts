@@ -1,30 +1,21 @@
-import { Interface } from "readline";
 import {
-  filter,
-  from,
-  lastValueFrom,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap
+    filter,
+    from,
+    lastValueFrom,
+    map, switchMap,
+    tap
 } from "rxjs";
-
-export interface Location {
-  latitud: number;
-  longitude: number;
-}
 
 export interface Coordinates {
   x: number;
   y: number;
 }
 
-export function getForecast(location: Location): Promise<any> {
+export function getForecast(location: Coordinates): Promise<any> {
   return lastValueFrom(
     from(
       fetch(
-        `https://api.weather.gov/points/${location.longitude},${location.latitud}`
+        `https://api.weather.gov/points/${location.y},${location.x}`
       )
     ).pipe(
       switchMap((response) => from(response.json())),

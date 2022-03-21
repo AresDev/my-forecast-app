@@ -1,6 +1,6 @@
 import { assign, createMachine } from "xstate";
-import { getGeocode } from "../api";
-import { getForecast, Location } from "./../api";
+import { Coordinates, getGeocode } from "../api";
+import { getForecast } from "./../api";
 
 interface AppContext {
   count: number;
@@ -9,7 +9,7 @@ interface AppContext {
   office: string;
   loading: boolean;
   results: any[];
-  location: Location;
+  location: Coordinates;
 }
 
 interface Result {
@@ -26,7 +26,7 @@ const forecastMachine = createMachine<AppContext>(
       address: "11490 NW 80TH ST Medley Florida", //4600 Silver Hill Rd C Washington C DC 20233
       matches: [],
       results: [],
-      location: { latitud: -76.92744, longitude: 38.845985 },
+      location: { x: 0, y:0 },
       loading: false,
       office: ""
     },
@@ -81,7 +81,7 @@ const forecastMachine = createMachine<AppContext>(
       },
       getForecast: (context, event) => {
          const { coordinates } = context.matches[0];
-        return getForecast({latitud:coordinates.x, longitude: coordinates.y});
+        return getForecast({x:coordinates.x, y: coordinates.y});
       }
     },
     actions: {

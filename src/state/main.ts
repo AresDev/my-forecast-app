@@ -1,3 +1,4 @@
+import { Period } from './../ui/ForecastDetail';
 import { assign, createMachine } from "xstate";
 import { Coordinates, getGeocode } from "../api";
 import { getForecast } from "./../api";
@@ -8,14 +9,10 @@ interface AppContext {
   matches: any[];
   office: string;
   loading: boolean;
-  results: any[];
+  results: Period[];
   location: Coordinates;
 }
 
-interface Result {
-  count: number;
-  address: string;
-}
 
 const forecastMachine = createMachine<AppContext>(
   {
@@ -89,7 +86,6 @@ const forecastMachine = createMachine<AppContext>(
       toggleLoading: assign({ loading: (ctx) => !ctx.loading }),
       setAddress: assign({ address: (_, event) => event.address }),
       setLocation: assign((context, event) => {
-        console.log(event);
         const { addressMatches } = event.data;
         return {
           matches: addressMatches

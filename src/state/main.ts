@@ -7,7 +7,6 @@ interface AppContext {
   count: number;
   address: string;
   matches: any[];
-  office: string;
   loading: boolean;
   results: Period[];
   location: Coordinates;
@@ -20,25 +19,32 @@ const forecastMachine = createMachine<AppContext>(
     initial: "idle",
     context: {
       count: 0,
-      address: "11490 NW 80TH ST Medley Florida", //4600 Silver Hill Rd C Washington C DC 20233
+      address: "", // 11490 NW 80TH ST Medley Florida //4600 Silver Hill Rd C Washington C DC 20233
       matches: [],
       results: [],
-      location: { x: 0, y:0 },
+      location: { x: 0, y: 0 },
       loading: false,
-      office: ""
     },
     states: {
       idle: {
-        on: { BTN_CLICKED: "gettingGeocode" }
+        on: {
+          BTN_CLICKED: { target: "gettingGeocode", cond: "addressNotEmpty" }
+        }
       },
       gettingGeocode: {
         invoke: {
           src: "getGeocode",
-          onDone: {
-            target: "gettingForecast",
-            cond: "addressMatches",
-            actions: ["setLocation"]
-          },
+          onDone: [
+            {
+              target: "gettingForecast",
+              cond: "addressMatches",
+              actions: ["setLocation"]
+            },
+            {
+              target: "idle",
+              cond: "addressNotMatches",
+            }
+          ],
           onError: {
             target: "error",
             actions: ["debugEvent"]
@@ -62,36 +68,42 @@ const forecastMachine = createMachine<AppContext>(
       error: {
         on: {
           RETRY: "gettingGeocode"
-        },
+        }
       }
     }
   },
   {
     guards: {
-      addressMatches: (_, event) =>{
-        return event.data.addressMatches.length > 0
+      addressNotEmpty: (_, event) => {
+        return event.address.trim() !== "";
+      },
+      addressMatches: (_, event) => {
+        return event.data.addressMatches.length > 0;
+      },
+      addressNotMatches: (_, event) => {
+        return event.data.addressMatches.length === 0;
       }
     },
     services: {
-      getGeocode: (context) => {
-        return getGeocode(context.address);
+      getGeocode: (_, event) => {
+        return getGeocode(event.address);
       },
       getForecast: (context, event) => {
-         const { coordinates } = context.matches[0];
-        return getForecast({x:coordinates.x, y: coordinates.y});
+        const { coordinates } = context.matches[0];
+        return getForecast({ x: coordinates.x, y: coordinates.y });
       }
     },
     actions: {
-      debugEvent: (context, event) => console.log(event),
-      toggleLoading: assign({ loading: (ctx) => !ctx.loading }),
+      debugEvent: (_, event) => console.log(event),
+      toggleLoading: assign({ loading: (context) => !context.loading }),
       setAddress: assign({ address: (_, event) => event.address }),
-      setLocation: assign((context, event) => {
+      setLocation: assign((_, event) => {
         const { addressMatches } = event.data;
         return {
           matches: addressMatches
         };
       }),
-      setForecast: assign((context, event) => {
+      setForecast: assign((_, event) => {
         const { properties } = event.data;
         return {
           results: properties.periods

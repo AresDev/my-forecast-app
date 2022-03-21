@@ -2,6 +2,7 @@ import { useMachine } from "@xstate/react";
 import React from "react";
 import forecastMachine from "../state/main";
 import ForecastList from "../ui/ForecastList";
+import AddressForm from "./AddressForm";
 
 const ForecastApp = () => {
   const [current, send] = useMachine(forecastMachine, { devTools: true });
@@ -14,13 +15,18 @@ const ForecastApp = () => {
   return (
     <>
       <div>
-        {loading && <p>Loading...</p>}
-
-        <button onClick={() => send("BTN_CLICKED")}>Get Forecast</button>
+        <label>Please enter the address</label>
+        <AddressForm
+          onSearchClicked={(address) => send("BTN_CLICKED", { address })}
+        />
         {errorButton}
       </div>
       <div>
-        <ForecastList items={results}></ForecastList>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <ForecastList items={results}></ForecastList>
+        )}
       </div>
     </>
   );

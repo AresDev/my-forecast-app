@@ -1,0 +1,16 @@
+.address-container{
+     display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px;
+}
+
+.address-input{
+    width: 300px;
+}

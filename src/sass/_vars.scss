@@ -1,0 +1,10 @@
+$color__profile__menu__bg : red;
+$color__white: white;
+$color__border: #e3e3e8;
+$left__navbar-menu--width: get-rems(600px);
+
+@function get-rems($pixels) {
+  @return ($pixels / 16px) + rem;
+}
+
+$unit: 1rem;

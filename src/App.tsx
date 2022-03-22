@@ -1,12 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './App.scss';
 import ForecastApp from './features/ForecastApp';
 
 function App() {
   return (
     <div className="App">
-      <ForecastApp/>
+      <div className="ares-container">
+        <nav className="ares-header">
+          {/* <div className="ares-logo">
+            <FontAwesomeIcon icon={["fal", "coffee"]} />
+          </div> */}
+            <h1>My ForecastApp</h1>
+        </nav>
+
+        <main className="content">
+          <ForecastApp />
+        </main>
+
+        <nav className="ares-footer">
+          <span>
+            Made with <span className="heart">❤</span> in 🇨🇴 Colombia
+          </span>
+        </nav>
+      </div>
+
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

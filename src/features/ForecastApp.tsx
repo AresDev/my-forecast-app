@@ -1,8 +1,11 @@
-import { useMachine } from "@xstate/react";
 import React from "react";
+import { useMachine } from "@xstate/react";
 import forecastMachine from "../state/main";
-import ForecastList from "../ui/ForecastList";
+
+
 import AddressForm from "./AddressForm";
+import './ForecastApp.scss';
+import ForecastList from "../ui/ForecastList/ForecastList";
 
 const ForecastApp = () => {
   const [current, send] = useMachine(forecastMachine, { devTools: true });
@@ -14,13 +17,11 @@ const ForecastApp = () => {
   const loading  = !current.matches("idle");
   return (
     <>
-      <div>
-        <label>Please enter the address</label>
-        <AddressForm
-          onSearchClicked={(address) => send("BTN_CLICKED", { address })}
-        />
-        {errorButton}
-      </div>
+          <AddressForm
+            onSearchClicked={(address) => send("BTN_CLICKED", { address })}
+          />
+          {errorButton}
+
       <div>
         {loading ? (
           <p>Loading...</p>

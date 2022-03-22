@@ -1,7 +1,8 @@
-import { Period } from './../ui/ForecastDetail';
+
 import { assign, createMachine } from "xstate";
 import { Coordinates, getGeocode } from "../api";
-import { getForecast } from "./../api";
+import { getForecast } from "../api";
+import { Period } from "../ui/ForecastDetail/ForecastDetail";
 
 interface AppContext {
   count: number;

@@ -1,6 +1,6 @@
 import React from "react";
-import ForecastDetail, { Period } from "./ForecastDetail";
-
+import ForecastDetail, { Period } from "../ForecastDetail/ForecastDetail";
+import './ForecastList.scss';
 
 export interface IProps {
   items: Period[];
@@ -9,7 +9,7 @@ export interface IProps {
 const ForecastList = (props: IProps) => {
   const { items } = props;
   return (
-    <div>
+    <div className="list-container">
       {items.length > 0 ? (
         items.map((period) => (
           <ForecastDetail key={period.number} period={period} />

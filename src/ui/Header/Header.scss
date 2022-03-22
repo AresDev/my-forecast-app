@@ -1,0 +1,33 @@
+.header-text {
+    color: white;
+    display: block;
+  }
+
+nav.ares-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    background: black;
+    position: absolute;
+    z-index: 200;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border: 1px solid #e3e3e8;
+    align-content: stretch;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    
+    div.ares-logo {
+      padding-left: 30px;
+      fa-icon {
+        display: block;
+      }
+    }
+
+    ares-search {
+      justify-self: flex-start;
+    }
+  }

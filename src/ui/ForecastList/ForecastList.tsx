@@ -1,22 +1,29 @@
 import React from "react";
 import ForecastDetail, { Period } from "../ForecastDetail/ForecastDetail";
+import Loading from "../Loading/Loading";
+import NoResults from "../NoResults/NoResults";
 import './ForecastList.scss';
 
 export interface IProps {
   items: Period[];
+  loading:boolean;
 }
 
 const ForecastList = (props: IProps) => {
-  const { items } = props;
+  const { items, loading } = props;
   return (
     <div className="list-container">
-      {items.length > 0 ? (
+      {loading ? (
+        <Loading/>
+      ) : (
+
+      items.length > 0 ? (
         items.map((period) => (
           <ForecastDetail key={period.number} period={period} />
         ))
       ) : (
-        <span>No results</span>
-      )}
+        <NoResults />
+      ))}
     </div>
   );
 };

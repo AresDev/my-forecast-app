@@ -1,11 +1,11 @@
 import React from "react";
 import { useMachine } from "@xstate/react";
-import forecastMachine from "../state/main";
+import forecastMachine from "../../state/main";
 
 
-import AddressForm from "./AddressForm";
+import AddressForm from "../AddressForm/AddressForm";
 import './ForecastApp.scss';
-import ForecastList from "../ui/ForecastList/ForecastList";
+import ForecastList from "../../ui/ForecastList/ForecastList";
 
 const ForecastApp = () => {
   const [current, send] = useMachine(forecastMachine, { devTools: true });
@@ -23,11 +23,7 @@ const ForecastApp = () => {
           {errorButton}
 
       <div>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <ForecastList items={results}></ForecastList>
-        )}
+          <ForecastList loading={loading} items={results}></ForecastList>
       </div>
     </>
   );
